@@ -5,19 +5,17 @@ import {
   NavbarMenuToggle,
   NavbarBrand,
   NavbarItem,
-  NavbarMenuItem,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
-import { Link } from "@heroui/link";
 import { link as linkStyles } from "@heroui/theme";
 import NextLink from "next/link";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
+import { useWalletSelector } from "@near-wallet-selector/react-hook";
 
 import { siteConfig } from "@/config/site";
 import { ThemeSwitch } from "@/components/theme-switch";
-import { TwitterIcon, GithubIcon, DiscordIcon, Logo } from "@/components/icons";
-import { useWalletSelector } from "@near-wallet-selector/react-hook";
+import { Logo } from "@/components/icons";
 
 export const Navbar = () => {
   const { signedAccountId, signIn, signOut } = useWalletSelector();

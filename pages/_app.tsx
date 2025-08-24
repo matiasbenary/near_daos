@@ -3,8 +3,6 @@ import type { AppProps } from "next/app";
 import { HeroUIProvider } from "@heroui/system";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { useRouter } from "next/router";
-
-import { fontSans, fontMono } from "@/config/fonts";
 import "@/styles/globals.css";
 import { setupBitteWallet } from "@near-wallet-selector/bitte-wallet";
 import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
@@ -13,7 +11,9 @@ import { WalletSelectorProvider } from "@near-wallet-selector/react-hook";
 import "@near-wallet-selector/modal-ui/styles.css";
 import { NetworkId, WalletModuleFactory } from "@near-wallet-selector/core";
 
-const CONTRACT_ID = "sputnik-dao.testnet";
+import { fontSans, fontMono } from "@/config/fonts";
+
+const CONTRACT_ID = "sputnikv2.testnet";
 
 const walletSelectorConfig = {
   network: "testnet" as NetworkId,

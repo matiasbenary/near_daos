@@ -1,6 +1,7 @@
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
 import { useMemo, useState } from "react";
+import NextLink from "next/link";
 
 import DefaultLayout from "@/layouts/default";
 import daos from "@/mock/daos";
@@ -35,13 +36,13 @@ export default function IndexPage() {
     if (num > 999) {
       return `$${(num / 1_000).toFixed(2)}K`;
     }
-    
+
     return `$${num.toFixed(2)}`;
   };
 
   const toggleFollow = (id: string) =>
     setFollowing((prev) => ({ ...prev, [id]: !prev[id] }));
-  
+
   return (
     <DefaultLayout>
       <div className="flex flex-col gap-6 pb-16">
@@ -142,9 +143,11 @@ export default function IndexPage() {
                   >
                     {following[id] ? "Following" : "Follow"}
                   </Button>
-                  <Button fullWidth variant="bordered">
-                    View Profile
-                  </Button>
+                  <NextLink href={`/${encodeURIComponent(id)}`}>
+                    <Button fullWidth variant="bordered">
+                      View Profile
+                    </Button>
+                  </NextLink>
                 </div>
               </div>
             );
@@ -157,5 +160,3 @@ export default function IndexPage() {
     </DefaultLayout>
   );
 }
-
-
