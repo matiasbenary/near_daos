@@ -32,9 +32,7 @@ export default function DAOHeader({
           </div>
         </div>
 
-        <h1 className="text-3xl font-bold text-primary mb-6 capitalize">
-          {daoInfo.name}.dao.poolparty.near
-        </h1>
+        <h1 className="text-3xl font-bold text-primary mb-6">{daoInfo.name}</h1>
 
         <p className="text-foreground/70 mb-8 text-lg">
           The current bond is{" "}

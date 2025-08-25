@@ -8,8 +8,9 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
-import { Textarea } from "@heroui/input";
 import { useWalletSelector } from "@near-wallet-selector/react-hook";
+
+import MarkdownEditor from "../MarkdownEditor";
 
 interface CreateProposalModalProps {
   contractId: string;
@@ -98,19 +99,16 @@ export default function CreateProposalModal({
                   control={control}
                   name="description"
                   render={({ field }) => (
-                    <Textarea
-                      {...field}
+                    <MarkdownEditor
                       isRequired
-                      classNames={{
-                        input: "resize-none",
-                        inputWrapper: "border border-foreground/20",
-                      }}
                       errorMessage={errors.description?.message}
+                      height={300}
                       isInvalid={!!errors.description}
                       label="Proposal Description"
-                      maxRows={8}
-                      minRows={4}
-                      placeholder="Describe your proposal in detail..."
+                      placeholder="Describe your proposal in detail using Markdown..."
+                      preview="live"
+                      value={field.value}
+                      onChange={field.onChange}
                     />
                   )}
                   rules={{

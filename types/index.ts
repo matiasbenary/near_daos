@@ -157,3 +157,63 @@ export interface VoteAction {
   proposalId: number;
   action: VoteOption;
 }
+
+// //transfer
+// {
+//   "proposal": {
+//     "description": "asdaasd",
+//     "kind": {
+//       "Transfer": {
+//         "token_id": "",Si no se coloca nada es near
+//         "receiver_id": "gagdiez.near",
+//         "amount": "9000000000000000000000000"
+//       }
+//     }
+//   }
+// }
+// Function call
+// {
+//   "proposal": {
+//     "description": "qwe",
+//     "kind": {
+//       "FunctionCall": {
+//         "receiver_id": "flipcoin.near",
+//         "actions": [
+//           {
+//             "method_name": "mix",
+//             "args": "e2FzZDoxMjN9",
+//             "deposit": "1000000000000000000000000",
+//             "gas": "270000000000000"
+//           }
+//         ]
+//       }
+//     }
+//   }
+// }
+
+// Add member to role
+// {
+//   "proposal": {
+//     "description": "asd",
+//     "kind": {
+//       "AddMemberToRole": {
+//         "member_id": "gagdiez.near",
+//         "role": "council"
+//       }
+//     }
+//   }
+// }
+
+//Remove member from role
+
+// {
+//   "proposal": {
+//     "description": "asd",
+//     "kind": {
+//       "RemoveMemberFromRole": {
+//         "member_id": "aurorasupport.near",
+//         "role": "council"
+//       }
+//     }
+//   }
+// }
