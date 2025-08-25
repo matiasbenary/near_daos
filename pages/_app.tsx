@@ -13,7 +13,9 @@ import { NetworkId, WalletModuleFactory } from "@near-wallet-selector/core";
 
 import { fontSans, fontMono } from "@/config/fonts";
 
-const CONTRACT_ID = "sputnikv2.testnet";
+const CONTRACT_ID = "sputnik-v2.testnet ";
+// sputnik-v2.testnet
+// sputnikv2.testnet
 
 const walletSelectorConfig = {
   network: "testnet" as NetworkId,

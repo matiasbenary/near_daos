@@ -23,6 +23,71 @@ export interface Votes {
   [accountId: string]: VoteOption;
 }
 
+// Voting policy types
+export type WeightKind = "TokenWeight" | "RoleWeight";
+
+export type WeightOrRatio = { Weight: string } | { Ratio: [number, number] };
+
+export interface VotePolicy {
+  weight_kind: WeightKind;
+  quorum: string;
+  threshold: WeightOrRatio;
+}
+
+export type RoleKind = "Everyone" | { Member: string } | { Group: string[] };
+
+export interface RolePermission {
+  name: string;
+  kind: RoleKind;
+  permissions: string[];
+  vote_policy: { [key: string]: VotePolicy };
+}
+
+export interface Policy {
+  roles: RolePermission[];
+  default_vote_policy: VotePolicy;
+  proposal_bond: string;
+  proposal_period: string;
+  bounty_bond: string;
+  bounty_forgiveness_period: string;
+}
+
+export type VersionedPolicy = { Default: string[] } | { Current: Policy };
+
+export interface Config {
+  name: string;
+  purpose: string;
+  metadata: string; // Base64 encoded
+}
+
+export interface ActionCall {
+  method_name: string;
+  args: string; // Base64 encoded
+  deposit: string;
+  gas: string;
+}
+
+export interface Bounty {
+  description: string;
+  token: string;
+  amount: string;
+  times: number;
+  max_deadline: string;
+}
+
+export interface FactoryInfo {
+  factory_id: string;
+  auto_update: boolean;
+}
+
+export interface PolicyParameters {
+  proposal_bond?: string;
+  proposal_period?: string;
+  bounty_bond?: string;
+  bounty_forgiveness_period?: string;
+}
+
+// Legacy interfaces for backward compatibility
 export interface UpgradeRemoteAction {
   receiver_id: string;
   method_name: string;
@@ -42,8 +107,32 @@ export interface FunctionCallKind {
 }
 
 export type ProposalKind =
-  | { UpgradeRemote: UpgradeRemoteAction }
-  | { FunctionCall: FunctionCallKind };
+  | { ChangeConfig: { config: Config } }
+  | { ChangePolicy: { policy: VersionedPolicy } }
+  | { AddMemberToRole: { member_id: string; role: string } }
+  | { RemoveMemberFromRole: { member_id: string; role: string } }
+  | { FunctionCall: { receiver_id: string; actions: ActionCall[] } }
+  | { UpgradeSelf: { hash: string } }
+  | {
+      UpgradeRemote: { receiver_id: string; method_name: string; hash: string };
+    }
+  | {
+      Transfer: {
+        token_id: string;
+        receiver_id: string;
+        amount: string;
+        msg?: string;
+      };
+    }
+  | { SetStakingContract: { staking_id: string } }
+  | { AddBounty: { bounty: Bounty } }
+  | { BountyDone: { bounty_id: number; receiver_id: string } }
+  | { FactoryInfoUpdate: { factory_info: FactoryInfo } }
+  | { ChangePolicyAddOrUpdateRole: { role: RolePermission } }
+  | { ChangePolicyRemoveRole: { role: string } }
+  | { ChangePolicyUpdateDefaultVotePolicy: { vote_policy: VotePolicy } }
+  | { ChangePolicyUpdateParameters: { parameters: PolicyParameters } }
+  | "Vote";
 
 export interface Proposal {
   id: number;

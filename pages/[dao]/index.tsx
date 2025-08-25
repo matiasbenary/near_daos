@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useWalletSelector } from "@near-wallet-selector/react-hook";
 
 import DefaultLayout from "@/layouts/default";
-import CreateProposalModal from "@/components/CreateProposalModal";
+import CreateProposalModal from "@/components/DetailDao/CreateProposalModal";
 import { DAOInfo, Proposal, VoteOption } from "@/types";
 
 export default function DAOPage() {
@@ -26,7 +26,7 @@ export default function DAOPage() {
   useEffect(() => {
     if (dao && typeof dao === "string") {
       const mockDaoInfo: DAOInfo = {
-        name: dao.replace(/[-_]/g, " ").replace(/\..*$/, ""),
+        name: dao,
         bond: "1 N",
         votingTime: "7 days",
         councilMembers: ["gagdiez.near"],
@@ -74,11 +74,56 @@ export default function DAOPage() {
   }, [dao, viewFunction, currentPage]);
 
   const formatProposalKind = (kind: Proposal["kind"]): string => {
+    if (typeof kind === "string" && kind === "Vote") {
+      return "Vote";
+    }
     if ("UpgradeRemote" in kind) {
       return `Upgrade Remote: ${kind.UpgradeRemote.receiver_id}`;
     }
     if ("FunctionCall" in kind) {
       return `Function Call: ${kind.FunctionCall.receiver_id}`;
+    }
+    if ("ChangeConfig" in kind) {
+      return "Change Config";
+    }
+    if ("ChangePolicy" in kind) {
+      return "Change Policy";
+    }
+    if ("AddMemberToRole" in kind) {
+      return `Add Member: ${kind.AddMemberToRole.member_id} to ${kind.AddMemberToRole.role}`;
+    }
+    if ("RemoveMemberFromRole" in kind) {
+      return `Remove Member: ${kind.RemoveMemberFromRole.member_id} from ${kind.RemoveMemberFromRole.role}`;
+    }
+    if ("UpgradeSelf" in kind) {
+      return "Upgrade Self";
+    }
+    if ("Transfer" in kind) {
+      return `Transfer: ${kind.Transfer.amount} ${kind.Transfer.token_id} to ${kind.Transfer.receiver_id}`;
+    }
+    if ("SetStakingContract" in kind) {
+      return `Set Staking Contract: ${kind.SetStakingContract.staking_id}`;
+    }
+    if ("AddBounty" in kind) {
+      return "Add Bounty";
+    }
+    if ("BountyDone" in kind) {
+      return `Bounty Done: ${kind.BountyDone.bounty_id}`;
+    }
+    if ("FactoryInfoUpdate" in kind) {
+      return "Factory Info Update";
+    }
+    if ("ChangePolicyAddOrUpdateRole" in kind) {
+      return `Change Policy: Add/Update Role ${kind.ChangePolicyAddOrUpdateRole.role.name}`;
+    }
+    if ("ChangePolicyRemoveRole" in kind) {
+      return `Change Policy: Remove Role ${kind.ChangePolicyRemoveRole.role}`;
+    }
+    if ("ChangePolicyUpdateDefaultVotePolicy" in kind) {
+      return "Change Policy: Update Default Vote Policy";
+    }
+    if ("ChangePolicyUpdateParameters" in kind) {
+      return "Change Policy: Update Parameters";
     }
 
     return "Unknown";
@@ -109,12 +154,19 @@ export default function DAOPage() {
     try {
       setVotingProposalId(proposalId);
 
+      // Convert client vote option to contract action
+      const voteActionMap = {
+        Approve: "VoteApprove",
+        Reject: "VoteReject",
+        Remove: "VoteRemove",
+      } as const;
+
       await callFunction({
         contractId: dao as string,
         method: "act_proposal",
         args: {
           id: proposalId,
-          action: vote,
+          action: voteActionMap[vote],
         },
         gas: "100000000000000", // 100 TGas
         deposit: "0",
@@ -122,8 +174,8 @@ export default function DAOPage() {
 
       // Refresh current page after voting
       await fetchProposals(currentPage);
-    } catch {
-      // Handle error silently for now
+    } catch (error) {
+      console.error("Error voting on proposal:", error);
     } finally {
       setVotingProposalId(null);
     }

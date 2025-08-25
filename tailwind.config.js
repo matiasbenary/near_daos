@@ -131,18 +131,18 @@ const config = {
     "dark": {
       "colors": {
         "default": {
-          "50": "#0d0b0d",
-          "100": "#1a161a",
-          "200": "#272227",
-          "300": "#342d34",
-          "400": "#413841",
-          "500": "#676067",
-          "600": "#8d888d",
-          "700": "#b3afb3",
-          "800": "#d9d7d9",
-          "900": "#ffffff",
-          "foreground": "#fff",
-          "DEFAULT": "#413841"
+          "50": "#0a0d10",
+          "100": "#141b21",
+          "200": "#1e2932",
+          "300": "#283742",
+          "400": "#324553",
+          "500": "#4a5e6b",
+          "600": "#627883",
+          "700": "#7a919b",
+          "800": "#92aab3",
+          "900": "#aac3cb",
+          "foreground": "#e0e7eb",
+          "DEFAULT": "#324553"
         },
         "primary": {
           "50": "#422c17",
@@ -214,22 +214,22 @@ const config = {
           "foreground": "#000",
           "DEFAULT": "#fc9581"
         },
-        "background": "#20161F",
-        "foreground": "#c59f60",
+        "background": "#0f1419",
+        "foreground": "#e6fffa",
         "content1": {
-          "DEFAULT": "#2c1f2b",
+          "DEFAULT": "#1a2025",
           "foreground": "#fff"
         },
         "content2": {
-          "DEFAULT": "#3e2b3c",
+          "DEFAULT": "#1e252a",
           "foreground": "#fff"
         },
         "content3": {
-          "DEFAULT": "#50374d",
+          "DEFAULT": "#222a30",
           "foreground": "#fff"
         },
         "content4": {
-          "DEFAULT": "#62435f",
+          "DEFAULT": "#262f36",
           "foreground": "#fff"
         },
         "focus": "#db924b",
