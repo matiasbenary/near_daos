@@ -1,161 +1,196 @@
 import { Button } from "@heroui/button";
 import { Input } from "@heroui/input";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import NextLink from "next/link";
+import { useWalletSelector } from "@near-wallet-selector/react-hook";
 
 import DefaultLayout from "@/layouts/default";
-import daos from "@/mock/daos";
+import { SearchIcon } from "@/components/icons";
 
-// NOTE: Using local mock data. Replace with API integration when backend is ready.
-
-type Dao = {
-  contract_id: string;
-  total_in_dollar: string; // numeric string
-};
+const CONTRACT_ID = "sputnikv2.testnet";
+// sputnik-v2.testnet
+// sputnikv2.testnet
 
 export default function IndexPage() {
-  const [query, setQuery] = useState("");
-  const [following, setFollowing] = useState<Record<string, boolean>>({});
+  const [Daos, setDaos] = useState<string[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [fromIndex, setFromIndex] = useState(0);
+  const [limit] = useState(24);
+  const [hasMore, setHasMore] = useState(true);
+  const { viewFunction } = useWalletSelector();
 
-  const filtered = useMemo(
-    () =>
-      (daos as Dao[]).filter((d) =>
-        d.contract_id.toLowerCase().includes(query.toLowerCase()),
-      ),
-    [query],
-  );
+  useEffect(() => {
+    const fetchInitial = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const result = (await viewFunction({
+          contractId: CONTRACT_ID,
+          method: "get_daos",
+          args: { from_index: 0, limit },
+        })) as string[];
 
-  // Simple number formatter helpers
-  const formatUSD = (v: string) => {
-    const num = Number(v);
+        setDaos(result || []);
+        setFromIndex(result?.length || 0);
+        setHasMore((result?.length || 0) === limit);
+      } catch (err: any) {
+        setError(err?.message || "Failed to load DAOs");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    if (!isFinite(num)) return "0.00";
-    if (num > 999999) {
-      return `$${(num / 1_000_000).toFixed(2)}M`;
+    fetchInitial();
+  }, []);
+
+  const onLoadMore = async () => {
+    if (!hasMore || loading) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const result = (await viewFunction({
+        contractId: CONTRACT_ID,
+        method: "get_daos",
+        args: { from_index: fromIndex, limit },
+      })) as string[];
+
+      const newItems = result || [];
+
+      setDaos((prev) => Array.from(new Set([...prev, ...newItems])));
+
+      const fetched = newItems.length;
+
+      setFromIndex(fromIndex + fetched);
+      setHasMore(fetched === limit);
+    } catch (err: any) {
+      setError(err?.message || "Failed to load more DAOs");
+    } finally {
+      setLoading(false);
     }
-    if (num > 999) {
-      return `$${(num / 1_000).toFixed(2)}K`;
-    }
-
-    return `$${num.toFixed(2)}`;
   };
 
-  const toggleFollow = (id: string) =>
-    setFollowing((prev) => ({ ...prev, [id]: !prev[id] }));
+  const filteredDaos = useMemo(() => {
+    const q = search.trim().toLowerCase();
+
+    if (!q) return Daos;
+
+    return Daos.filter((d) => d.toLowerCase().includes(q));
+  }, [Daos, search]);
+
+  const isEmpty = !loading && filteredDaos.length === 0;
 
   return (
     <DefaultLayout>
       <div className="flex flex-col gap-6 pb-16">
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">DAOs</h1>
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <Input
-              className="sm:max-w-xl"
-              placeholder="Search by name"
-              radius="full"
-              size="lg"
-              startContent={<span className="text-default-400">🔍</span>}
-              value={query}
-              onValueChange={setQuery}
+              className="max-w-xl"
+              placeholder="Search by DAO id..."
+              radius="sm"
+              startContent={<SearchIcon className="text-gray-500" />}
+              value={search}
+              onValueChange={setSearch}
             />
-            <Button className="h-12" radius="full" variant="bordered">
-              Filter ▾
-            </Button>
-            <Button
-              className="h-12 ml-auto sm:ml-0"
-              color="primary"
-              radius="full"
-            >
-              Create a new DAO ＋
-            </Button>
+            <div className="text-sm text-gray-500 dark:text-gray-400">
+              {loading
+                ? "Loading…"
+                : `${filteredDaos.length} of ${Daos.length} shown`}
+            </div>
           </div>
-        </div>
-
-        <div className="grid gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
-          {filtered.slice(0, 30).map((dao) => {
-            const id = dao.contract_id;
-            // Placeholder metrics (until API supplies):
-            const members = (id.length % 150) + 1; // deterministic pseudo
-            const proposals = (id.length * 3) % 500;
-
-            return (
-              <div
-                key={id}
-                className="rounded-2xl border border-default-200 dark:border-default-100/20 bg-white dark:bg-default-50 shadow-sm p-6 flex flex-col gap-4"
+          {error && (
+            <div className="text-sm text-red-600 dark:text-red-400">
+              {error}
+              <Button
+                className="ml-3"
+                size="sm"
+                onPress={() => location.reload()}
               >
-                <div className="flex items-start gap-4">
-                  <div className="h-12 w-12 rounded-full bg-default-200 flex items-center justify-center text-lg font-bold">
-                    {id[0]?.toUpperCase()}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h2 className="font-semibold text-lg truncate" title={id}>
-                      {id}
-                    </h2>
-                    <p className="text-small text-default-500">
-                      No description
-                    </p>
-                    <div className="flex flex-wrap gap-4 mt-2 text-sm font-medium text-primary">
-                      <button className="hover:underline">DAO Funds</button>
-                      <button className="hover:underline">
-                        Members/Groups
-                      </button>
-                      <button className="hover:underline">
-                        Active proposals
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-10 text-sm mt-2">
-                  <div>
-                    <div className="font-semibold">
-                      {formatUSD(dao.total_in_dollar)}
-                    </div>
-                    <span className="text-xs text-default-500">Treasury</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold">{members}</div>
-                    <span className="text-xs text-default-500">Members</span>
-                  </div>
-                  <div>
-                    <div className="font-semibold">{proposals}</div>
-                    <span className="text-xs text-default-500">Proposals</span>
-                  </div>
-                </div>
-                <div className="flex flex-wrap gap-6 text-default-500 text-sm">
-                  <div className="flex items-center gap-1">
-                    ⚙️ <span>Settings</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    🖼️ <span>NFTs</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    🎯 <span>Bounties</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    🗳️ <span>Polls</span>
-                  </div>
-                </div>
-                <div className="flex gap-4 mt-auto pt-2">
-                  <Button
-                    fullWidth
-                    color={following[id] ? "default" : "primary"}
-                    onClick={() => toggleFollow(id)}
-                  >
-                    {following[id] ? "Following" : "Follow"}
-                  </Button>
-                  <NextLink href={`/${encodeURIComponent(id)}`}>
-                    <Button fullWidth variant="bordered">
-                      View Profile
-                    </Button>
-                  </NextLink>
-                </div>
-              </div>
-            );
-          })}
-          {filtered.length === 0 && (
-            <p className="text-default-500 col-span-full">No DAOs found.</p>
+                Retry
+              </Button>
+            </div>
           )}
         </div>
+
+        {/* Grid */}
+        <div className="grid gap-6 md:gap-8 grid-cols-1 sm:grid-cols-2 xl:grid-cols-3">
+          {/* Loading skeletons */}
+          {loading && Daos.length === 0 && (
+            <>
+              {Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={`skeleton-${i}`}
+                  className="border border-gray-200 dark:border-gray-800 rounded-lg p-6 animate-pulse h-36"
+                >
+                  <div className="h-6 w-1/2 bg-gray-200 dark:bg-gray-700 rounded mb-4" />
+                  <div className="h-10 w-28 bg-gray-200 dark:bg-gray-700 rounded" />
+                </div>
+              ))}
+            </>
+          )}
+
+          {/* Empty state */}
+          {isEmpty && (
+            <div className="col-span-full text-center py-12">
+              <div className="text-2xl font-semibold mb-2">No DAOs found</div>
+              <div className="text-gray-500 dark:text-gray-400 mb-6">
+                Try a different search or clear the filter.
+              </div>
+              <Button onPress={() => setSearch("")}>Clear search</Button>
+            </div>
+          )}
+
+          {/* DAO cards */}
+          {filteredDaos.map((dao) => (
+            <NextLink key={dao} className="no-underline" href={`/${dao}`}>
+              <div className="group border border-gray-200 dark:border-gray-800 rounded-lg p-6 hover:shadow-lg hover:-translate-y-0.5 transition-all h-full flex flex-col gap-4">
+                <div className="flex items-center gap-4">
+                  {/* Simple avatar with initials */}
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200 font-semibold">
+                    {dao.substring(0, 2).toUpperCase()}
+                  </div>
+                  <div className="min-w-0">
+                    <h2 className="text-xl font-semibold truncate" title={dao}>
+                      {dao}
+                    </h2>
+                    <div className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      Sputnik v2 • Testnet
+                    </div>
+                  </div>
+                </div>
+
+                <div className="mt-auto flex items-center justify-end">
+                  <Button
+                    className="group-hover:translate-x-0.5 transition-transform"
+                    color="primary"
+                    size="sm"
+                    variant="solid"
+                  >
+                    View DAO
+                  </Button>
+                </div>
+              </div>
+            </NextLink>
+          ))}
+        </div>
+
+        {/* Load more */}
+        {!isEmpty && filteredDaos.length > 0 && (
+          <div className="flex justify-center mt-2">
+            {hasMore ? (
+              <Button isDisabled={loading} variant="flat" onPress={onLoadMore}>
+                {loading ? "Loading…" : "Load more"}
+              </Button>
+            ) : (
+              <div className="text-xs text-gray-500 dark:text-gray-400">
+                No more DAOs
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </DefaultLayout>
   );

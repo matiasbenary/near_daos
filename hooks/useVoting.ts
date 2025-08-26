@@ -5,6 +5,8 @@ import { Proposal, VoteOption } from "@/types";
 
 export function useVoting(
   dao: string | string[] | undefined,
+  councilMembers: string[],
+
   updateView: () => Promise<void>,
 ) {
   const { callFunction, signedAccountId } = useWalletSelector();
@@ -53,10 +55,14 @@ export function useVoting(
       ? proposal.votes[signedAccountId]
       : null;
   };
-  // TODO: How I can I get council members from the DAO info?
-  // councilMembers.includes(signedAccountId)) ||
+
   const canUserVote = (proposal: Proposal): boolean => {
-    return (signedAccountId && proposal.status === "InProgress") || false;
+    return (
+      (signedAccountId &&
+        proposal.status === "InProgress" &&
+        councilMembers.includes(signedAccountId)) ||
+      false
+    );
   };
 
   return {

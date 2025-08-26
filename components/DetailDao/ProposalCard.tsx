@@ -1,4 +1,5 @@
 import { Card, CardBody } from "@heroui/card";
+import MDEditor from "@uiw/react-md-editor";
 
 import VotingActions from "./VotingActions";
 
@@ -28,13 +29,31 @@ export default function ProposalCard({
               {proposal.status}
             </span>
           </div>
-          <p className="text-foreground/80 mb-3 line-clamp-3">
-            {proposal.description}
-          </p>
+          <div className="text-foreground/80 mb-3 max-h-32 overflow-hidden">
+            <MDEditor.Markdown
+              source={proposal.description}
+              style={{
+                whiteSpace: "pre-wrap",
+                backgroundColor: "transparent",
+                padding: 0,
+                fontSize: "14px",
+                lineHeight: "1.5",
+              }}
+            />
+          </div>
           <div className="text-sm text-foreground/60 space-y-1">
             <div>Type: {formatProposalKind(proposal.kind)}</div>
             <div>Proposer: {proposal.proposer}</div>
             <div>Submitted: {formatTimestamp(proposal.submission_time)}</div>
+            <div>
+              Closes:{" "}
+              {formatTimestamp(
+                (
+                  BigInt(proposal.submission_time) +
+                  (daoInfo?.proposalPeriod || BigInt(0))
+                ).toString(),
+              )}
+            </div>
           </div>
         </div>
 

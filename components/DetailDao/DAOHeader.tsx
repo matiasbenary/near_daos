@@ -1,12 +1,10 @@
 import { Card, CardBody } from "@heroui/card";
 import { Button } from "@heroui/button";
+import { Image } from "@heroui/image";
+import NextImage from "next/image";
 
-interface DAOInfo {
-  name: string;
-  bond: string;
-  votingTime: string;
-  councilMembers: string[];
-}
+import { DAOInfo } from "@/types";
+import { formatDuration } from "@/utils/time";
 
 interface DAOHeaderProps {
   daoInfo: DAOInfo;
@@ -22,13 +20,23 @@ export default function DAOHeader({
       <CardBody className="p-8 text-center">
         <div className="flex justify-center mb-6">
           <div className="w-20 h-20 bg-gradient-to-br from-primary-400 to-primary-500 rounded-full flex items-center justify-center shadow-lg">
-            <svg
-              className="w-10 h-10 text-primary-foreground"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-            </svg>
+            {daoInfo?.logo ? (
+              <Image
+                isBlurred
+                as={NextImage}
+                height={80}
+                src={daoInfo.logo}
+                width={80}
+              />
+            ) : (
+              <svg
+                className="w-10 h-10 text-primary-foreground"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+              </svg>
+            )}
           </div>
         </div>
 
@@ -36,10 +44,10 @@ export default function DAOHeader({
 
         <p className="text-foreground/70 mb-8 text-lg">
           The current bond is{" "}
-          <span className="text-primary font-semibold">{daoInfo.bond}</span>
+          <span className="text-primary font-semibold">{daoInfo.bond} N </span>{" "}
           and the voting time for proposals is{" "}
           <span className="text-primary font-semibold">
-            {daoInfo.votingTime}
+            {formatDuration(daoInfo.proposalPeriod)}
           </span>
           .
         </p>

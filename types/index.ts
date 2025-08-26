@@ -146,9 +146,14 @@ export interface Proposal {
 }
 
 export interface DAOInfo {
+  contract: string;
   name: string;
+  description: string;
+  organizationName: string;
+  logo: string | null;
+  cover: string | null;
   bond: string;
-  votingTime: string;
+  proposalPeriod: bigint;
   councilMembers: string[];
 }
 

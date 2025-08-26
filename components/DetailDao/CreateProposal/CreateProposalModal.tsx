@@ -1,5 +1,7 @@
+import type { ProposalFormData, ProposalType, ProposalKind } from "./types";
+
 import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import {
   Modal,
   ModalContent,
@@ -8,9 +10,16 @@ import {
   ModalFooter,
 } from "@heroui/modal";
 import { Button } from "@heroui/button";
+import { Select, SelectItem } from "@heroui/select";
 import { useWalletSelector } from "@near-wallet-selector/react-hook";
+import { NEAR } from "@near-js/tokens";
 
-import MarkdownEditor from "../MarkdownEditor";
+import MarkdownEditor from "../../MarkdownEditor";
+
+import TransferForm, { buildTransferKind } from "./TransferForm";
+import FunctionCallForm, { buildFunctionCallKind } from "./FunctionCallForm";
+import AddMemberForm, { buildAddMemberKind } from "./AddMemberForm";
+import RemoveMemberForm, { buildRemoveMemberKind } from "./RemoveMemberForm";
 
 interface CreateProposalModalProps {
   contractId: string;
@@ -18,9 +27,13 @@ interface CreateProposalModalProps {
   onClose: () => void;
 }
 
-interface ProposalFormData {
-  description: string;
-}
+const PROPOSAL_TYPES: { label: string; value: ProposalType }[] = [
+  { label: "Vote", value: "Vote" },
+  { label: "Transfer", value: "Transfer" },
+  { label: "FunctionCall", value: "FunctionCall" },
+  { label: "AddMemberToRole", value: "AddMemberToRole" },
+  { label: "RemoveMemberFromRole", value: "RemoveMemberFromRole" },
+];
 
 export default function CreateProposalModal({
   contractId,
@@ -28,6 +41,7 @@ export default function CreateProposalModal({
   onClose,
 }: CreateProposalModalProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [proposalType, setProposalType] = useState<ProposalType>("Vote");
   const { callFunction } = useWalletSelector();
   const {
     control,
@@ -36,6 +50,7 @@ export default function CreateProposalModal({
     formState: { errors, isValid },
   } = useForm<ProposalFormData>({
     mode: "onChange",
+    shouldUnregister: true,
     defaultValues: {
       description: "",
     },
@@ -44,22 +59,38 @@ export default function CreateProposalModal({
     try {
       setIsSubmitting(true);
 
+      // Let each component define how to build its own kind payload
+      const builders: Record<
+        ProposalType,
+        (d: ProposalFormData) => ProposalKind
+      > = {
+        Vote: () => "Vote",
+        Transfer: buildTransferKind,
+        FunctionCall: buildFunctionCallKind,
+        AddMemberToRole: buildAddMemberKind,
+        RemoveMemberFromRole: buildRemoveMemberKind,
+      };
+
+      const kind = builders[proposalType](data);
+
       await callFunction({
         method: "add_proposal",
         args: {
           proposal: {
             description: data.description,
-            kind: "Vote",
+            kind,
           },
         },
         contractId,
         gas: 300000000000000,
-        deposit: BigInt("1000000000000000000000000"),
+        deposit: NEAR.toUnits("1"),
       });
 
       reset();
       onClose();
     } catch {
+      // eslint-disable-next-line no-console
+      console.error("Error creating proposal");
     } finally {
       setIsSubmitting(false);
     }
@@ -94,7 +125,26 @@ export default function CreateProposalModal({
 
           <ModalBody className="py-6">
             <div className="space-y-6">
-              <div>
+              <div className="grid grid-cols-1 gap-4">
+                <div>
+                  <Select
+                    aria-label="Select proposal type"
+                    label="Proposal Type"
+                    selectedKeys={new Set([proposalType])}
+                    selectionMode="single"
+                    onSelectionChange={(keys) => {
+                      const k = Array.from(keys as Set<string>)[0];
+
+                      if (k) setProposalType(k as ProposalType);
+                    }}
+                  >
+                    {PROPOSAL_TYPES.map((t) => (
+                      <SelectItem key={t.value} textValue={t.label}>
+                        {t.label}
+                      </SelectItem>
+                    ))}
+                  </Select>
+                </div>
                 <Controller
                   control={control}
                   name="description"
@@ -123,6 +173,19 @@ export default function CreateProposalModal({
                     },
                   }}
                 />
+                {/* Per-type fields */}
+                {proposalType === "Transfer" && (
+                  <TransferForm control={control} errors={errors} />
+                )}
+                {proposalType === "FunctionCall" && (
+                  <FunctionCallForm control={control} errors={errors} />
+                )}
+                {proposalType === "AddMemberToRole" && (
+                  <AddMemberForm control={control} errors={errors} />
+                )}
+                {proposalType === "RemoveMemberFromRole" && (
+                  <RemoveMemberForm control={control} errors={errors} />
+                )}
               </div>
             </div>
           </ModalBody>

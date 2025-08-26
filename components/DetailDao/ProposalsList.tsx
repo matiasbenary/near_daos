@@ -18,7 +18,7 @@ export default function ProposalsList({ daoInfo }: ProposalsListProps) {
     proposalsPerPage,
     setCurrentPage,
     updateProposals,
-  } = useProposals(daoInfo?.name as string);
+  } = useProposals(daoInfo?.contract as string);
 
   return (
     <div className="w-full">

@@ -21,7 +21,11 @@ export default function VotingActions({
     hasUserVoted,
     getUserVote,
     canUserVote,
-  } = useVoting(daoInfo?.name as string, updateProposals);
+  } = useVoting(
+    daoInfo?.contract as string,
+    daoInfo?.councilMembers || [],
+    updateProposals,
+  );
   const { signedAccountId } = useWalletSelector();
 
   if (!signedAccountId) {

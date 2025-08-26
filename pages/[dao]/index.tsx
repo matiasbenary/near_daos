@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 import DefaultLayout from "@/layouts/default";
-import CreateProposalModal from "@/components/DetailDao/CreateProposalModal";
+import CreateProposalModal from "@/components/DetailDao/CreateProposal/CreateProposalModal";
 import DAOHeader from "@/components/DetailDao/DAOHeader";
 import ProposalsList from "@/components/DetailDao/ProposalsList";
 import LoadingState from "@/components/DetailDao/LoadingState";
