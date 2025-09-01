@@ -2,7 +2,6 @@ import {
   Navbar as HeroUINavbar,
   NavbarContent,
   NavbarMenu,
-  NavbarMenuToggle,
   NavbarItem,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
@@ -11,9 +10,6 @@ import NextLink from "next/link";
 import clsx from "clsx";
 import { useState, useEffect } from "react";
 import { useWalletSelector } from "@near-wallet-selector/react-hook";
-
-import { siteConfig } from "@/config/site";
-import { ThemeSwitch } from "@/components/theme-switch";
 
 export const Navbar = () => {
   const { signedAccountId, signIn, signOut } = useWalletSelector();
@@ -34,20 +30,18 @@ export const Navbar = () => {
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <div className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: "foreground" }),
-                  "data-[active=true]:text-primary data-[active=true]:font-medium",
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
+          <NavbarItem key={"/"}>
+            <NextLink
+              className={clsx(
+                linkStyles({ color: "foreground" }),
+                "data-[active=true]:text-primary data-[active=true]:font-medium",
+              )}
+              color="foreground"
+              href={"/"}
+            >
+              Home
+            </NextLink>
+          </NavbarItem>
         </div>
       </NavbarContent>
 
@@ -55,9 +49,6 @@ export const Navbar = () => {
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
       >
-        <NavbarItem className="hidden sm:flex gap-2">
-          <ThemeSwitch />
-        </NavbarItem>
         <NavbarItem className="hidden md:flex">
           <Button
             className="text-sm font-normal text-white bg-primary"
@@ -67,11 +58,6 @@ export const Navbar = () => {
             {label}
           </Button>
         </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-        <ThemeSwitch />
-        <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>
@@ -91,7 +77,7 @@ export const Navbar = () => {
           <Button
             className="text-sm font-normal text-white bg-primary"
             variant="solid"
-            onClick={action || undefined}
+            onPress={action || undefined}
           >
             {label}
           </Button>

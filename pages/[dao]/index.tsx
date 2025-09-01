@@ -1,11 +1,9 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import DefaultLayout from "@/layouts/default";
 import CreateProposalModal from "@/components/DetailDao/CreateProposal/CreateProposalModal";
 import DAOHeader from "@/components/DetailDao/DAOHeader";
 import ProposalsList from "@/components/DetailDao/ProposalsList";
-import LoadingState from "@/components/DetailDao/LoadingState";
 import { useDAOInfo } from "@/hooks";
 
 export default function DAOPage() {
@@ -18,17 +16,24 @@ export default function DAOPage() {
     useState(false);
 
   if (!daoInfo) {
-    return <LoadingState />;
+    return (
+      <>
+        <div className="flex justify-center items-center h-64">
+          <div className="text-lg text-foreground/50">
+            Loading DAO information...
+          </div>
+        </div>
+      </>
+    );
   }
 
   return (
-    <DefaultLayout>
+    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
         <DAOHeader
           daoInfo={daoInfo}
           onCreateProposal={() => setIsCreateProposalModalOpen(true)}
         />
-
         <ProposalsList daoInfo={daoInfo} />
       </div>
 
@@ -37,6 +42,6 @@ export default function DAOPage() {
         isOpen={isCreateProposalModalOpen}
         onClose={() => setIsCreateProposalModalOpen(false)}
       />
-    </DefaultLayout>
+    </main>
   );
 }

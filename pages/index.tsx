@@ -4,9 +4,6 @@ import { useEffect, useMemo, useState } from "react";
 import NextLink from "next/link";
 import { useWalletSelector } from "@near-wallet-selector/react-hook";
 
-import DefaultLayout from "@/layouts/default";
-import { SearchIcon } from "@/components/icons";
-
 const CONTRACT_ID = "sputnikv2.testnet";
 // sputnik-v2.testnet
 // sputnikv2.testnet
@@ -22,7 +19,7 @@ export default function IndexPage() {
   const { viewFunction } = useWalletSelector();
 
   useEffect(() => {
-    const fetchInitial = async () => {
+    const fetch = async () => {
       setLoading(true);
       setError(null);
       try {
@@ -42,8 +39,8 @@ export default function IndexPage() {
       }
     };
 
-    fetchInitial();
-  }, []);
+    fetch();
+  }, [limit]);
 
   const onLoadMore = async () => {
     if (!hasMore || loading) return;
@@ -82,7 +79,7 @@ export default function IndexPage() {
   const isEmpty = !loading && filteredDaos.length === 0;
 
   return (
-    <DefaultLayout>
+    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
       <div className="flex flex-col gap-6 pb-16">
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">DAOs</h1>
@@ -91,7 +88,6 @@ export default function IndexPage() {
               className="max-w-xl"
               placeholder="Search by DAO id..."
               radius="sm"
-              startContent={<SearchIcon className="text-gray-500" />}
               value={search}
               onValueChange={setSearch}
             />
@@ -192,6 +188,6 @@ export default function IndexPage() {
           </div>
         )}
       </div>
-    </DefaultLayout>
+    </main>
   );
 }
