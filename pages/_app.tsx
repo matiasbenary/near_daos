@@ -3,7 +3,6 @@ import type { AppProps } from "next/app";
 import "@/styles/globals.css";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
-import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
 import { setupBitteWallet } from "@near-wallet-selector/bitte-wallet";
 import { setupHotWallet } from "@near-wallet-selector/hot-wallet";
 import { setupLedger } from "@near-wallet-selector/ledger";
@@ -17,7 +16,6 @@ const walletSelectorConfig = {
   network: "testnet" as NetworkId,
   modules: [
     setupBitteWallet(),
-    setupMeteorWallet(),
     setupHotWallet(),
     setupLedger(),
   ] as WalletModuleFactory[],
