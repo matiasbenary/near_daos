@@ -6,7 +6,7 @@ import { Proposal, VoteOption } from "@/types";
 export function useVoting(
   dao: string | string[] | undefined,
   councilMembers: string[],
-
+  proposalPeriod: bigint,
   updateView: () => Promise<void>,
 ) {
   const { callFunction, signedAccountId } = useWalletSelector();
@@ -60,6 +60,8 @@ export function useVoting(
     return (
       (signedAccountId &&
         proposal.status === "InProgress" &&
+        BigInt(Date.now()) * BigInt(1e6) <
+          BigInt(proposal.submission_time) + proposalPeriod &&
         councilMembers.includes(signedAccountId)) ||
       false
     );

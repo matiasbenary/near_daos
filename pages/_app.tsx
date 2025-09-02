@@ -14,10 +14,7 @@ import { NetworkId, WalletModuleFactory } from "@near-wallet-selector/core";
 import { Navbar } from "@/components/navbar";
 
 const walletSelectorConfig = {
-  network: {
-    networkId: "testnet" as NetworkId,
-    nodeUrl: "https://rpc.testnet.fastnear.com",
-  },
+  network: "testnet" as NetworkId,
   modules: [
     setupBitteWallet(),
     setupMeteorWallet(),

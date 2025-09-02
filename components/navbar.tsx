@@ -3,6 +3,7 @@ import {
   NavbarContent,
   NavbarMenu,
   NavbarItem,
+  NavbarMenuToggle,
 } from "@heroui/navbar";
 import { Button } from "@heroui/button";
 import { link as linkStyles } from "@heroui/theme";
@@ -44,7 +45,6 @@ export const Navbar = () => {
           </NavbarItem>
         </div>
       </NavbarContent>
-
       <NavbarContent
         className="hidden sm:flex basis-1/5 sm:basis-full"
         justify="end"
@@ -58,6 +58,9 @@ export const Navbar = () => {
             {label}
           </Button>
         </NavbarItem>
+      </NavbarContent>
+      <NavbarContent className="sm:hidden pl-4" justify="end">
+        <NavbarMenuToggle />
       </NavbarContent>
 
       <NavbarMenu>

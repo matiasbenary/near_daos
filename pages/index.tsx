@@ -79,7 +79,7 @@ export default function IndexPage() {
   const isEmpty = !loading && filteredDaos.length === 0;
 
   return (
-    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
+    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-1 sm:pt-16">
       <div className="flex flex-col gap-6 pb-16">
         <div className="flex flex-col gap-4">
           <h1 className="text-4xl font-semibold">DAOs</h1>

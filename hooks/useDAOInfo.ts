@@ -34,8 +34,8 @@ export function useDAOInfo(dao: string | string[] | undefined) {
       const councilRole = policy.roles.find((role) => role.name === "council");
       const councilMembers =
         councilRole &&
-          typeof councilRole.kind === "object" &&
-          "Group" in councilRole.kind
+        typeof councilRole.kind === "object" &&
+        "Group" in councilRole.kind
           ? councilRole.kind.Group
           : [];
 

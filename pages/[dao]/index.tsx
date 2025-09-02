@@ -28,7 +28,7 @@ export default function DAOPage() {
   }
 
   return (
-    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-16">
+    <main className="container mx-auto max-w-7xl px-6 flex-grow pt-1 sm:pt-16">
       <div className="flex flex-col items-center justify-center min-h-[70vh] px-4">
         <DAOHeader
           daoInfo={daoInfo}

@@ -1,4 +1,4 @@
-import {heroui} from "@heroui/theme"
+const {heroui} = require("@heroui/theme")
 
 /** @type {import('tailwindcss').Config} */
 const config = {
@@ -23,217 +23,217 @@ const config = {
     "light": {
       "colors": {
         "default": {
-          "50": "#f6f5f4",
-          "100": "#e9e7e5",
-          "200": "#dbd9d6",
-          "300": "#cecbc6",
-          "400": "#c1bdb7",
-          "500": "#b4afa8",
-          "600": "#95908b",
-          "700": "#75726d",
-          "800": "#565350",
-          "900": "#363532",
+          "50": "#f8fafc",
+          "100": "#f1f5f9",
+          "200": "#e2e8f0",
+          "300": "#cbd5e1",
+          "400": "#94a3b8",
+          "500": "#64748b",
+          "600": "#475569",
+          "700": "#334155",
+          "800": "#1e293b",
+          "900": "#0f172a",
           "foreground": "#000",
-          "DEFAULT": "#b4afa8"
+          "DEFAULT": "#64748b"
         },
         "primary": {
-          "50": "#fbf1e9",
-          "100": "#f4dec9",
-          "200": "#eecbaa",
-          "300": "#e8b88a",
-          "400": "#e1a56b",
-          "500": "#db924b",
-          "600": "#b5783e",
-          "700": "#8e5f31",
-          "800": "#684524",
-          "900": "#422c17",
-          "foreground": "#000",
-          "DEFAULT": "#db924b"
+          "50": "#eff6ff",
+          "100": "#dbeafe",
+          "200": "#bfdbfe",
+          "300": "#93c5fd",
+          "400": "#60a5fa",
+          "500": "#3b82f6",
+          "600": "#2563eb",
+          "700": "#1d4ed8",
+          "800": "#1e40af",
+          "900": "#1e3a8a",
+          "foreground": "#fff",
+          "DEFAULT": "#2563eb"
         },
         "secondary": {
-          "50": "#eaf0f0",
-          "100": "#cedadb",
-          "200": "#b1c5c6",
-          "300": "#94afb0",
-          "400": "#779a9b",
-          "500": "#5a8486",
-          "600": "#4a6d6f",
-          "700": "#3b5657",
-          "800": "#2b3f40",
-          "900": "#1b2828",
-          "foreground": "#000",
-          "DEFAULT": "#5a8486"
+          "50": "#f0fdfa",
+          "100": "#ccfbf1",
+          "200": "#99f6e4",
+          "300": "#5eead4",
+          "400": "#2dd4bf",
+          "500": "#14b8a6",
+          "600": "#0d9488",
+          "700": "#0f766e",
+          "800": "#115e59",
+          "900": "#134e4a",
+          "foreground": "#fff",
+          "DEFAULT": "#14b8a6"
         },
         "success": {
-          "50": "#f3f6f0",
-          "100": "#e2e9db",
-          "200": "#d0ddc6",
-          "300": "#bfd0b1",
-          "400": "#aec49c",
-          "500": "#9db787",
-          "600": "#82976f",
-          "700": "#667758",
-          "800": "#4b5740",
-          "900": "#2f3729",
-          "foreground": "#000",
-          "DEFAULT": "#9db787"
+          "50": "#f0fdf4",
+          "100": "#dcfce7",
+          "200": "#bbf7d0",
+          "300": "#86efac",
+          "400": "#4ade80",
+          "500": "#22c55e",
+          "600": "#16a34a",
+          "700": "#15803d",
+          "800": "#166534",
+          "900": "#14532d",
+          "foreground": "#fff",
+          "DEFAULT": "#22c55e"
         },
         "warning": {
-          "50": "#fff9eb",
-          "100": "#fff2cf",
-          "200": "#ffeab3",
-          "300": "#ffe297",
-          "400": "#ffda7b",
-          "500": "#ffd25f",
-          "600": "#d2ad4e",
-          "700": "#a6893e",
-          "800": "#79642d",
-          "900": "#4d3f1d",
+          "50": "#fffbeb",
+          "100": "#fef3c7",
+          "200": "#fde68a",
+          "300": "#fcd34d",
+          "400": "#fbbf24",
+          "500": "#f59e0b",
+          "600": "#d97706",
+          "700": "#b45309",
+          "800": "#92400e",
+          "900": "#78350f",
           "foreground": "#000",
-          "DEFAULT": "#ffd25f"
+          "DEFAULT": "#f59e0b"
         },
         "danger": {
-          "50": "#fff2ef",
-          "100": "#fedfd9",
-          "200": "#fecdc3",
-          "300": "#fdbaad",
-          "400": "#fda897",
-          "500": "#fc9581",
-          "600": "#d07b6a",
-          "700": "#a46154",
-          "800": "#78473d",
-          "900": "#4c2d27",
-          "foreground": "#000",
-          "DEFAULT": "#fc9581"
+          "50": "#fef2f2",
+          "100": "#fee2e2",
+          "200": "#fecaca",
+          "300": "#fca5a5",
+          "400": "#f87171",
+          "500": "#ef4444",
+          "600": "#dc2626",
+          "700": "#b91c1c",
+          "800": "#991b1b",
+          "900": "#7f1d1d",
+          "foreground": "#fff",
+          "DEFAULT": "#ef4444"
         },
-        "background": "#fffbf6",
-        "foreground": "#a27225",
+        "background": "#ffffff",
+        "foreground": "#0f172a",
         "content1": {
-          "DEFAULT": "#fff2e0",
-          "foreground": "#000"
+          "DEFAULT": "#ffffff",
+          "foreground": "#0f172a"
         },
         "content2": {
-          "DEFAULT": "#ffe9cc",
-          "foreground": "#000"
+          "DEFAULT": "#f8fafc",
+          "foreground": "#0f172a"
         },
         "content3": {
-          "DEFAULT": "#ffe0b8",
-          "foreground": "#000"
+          "DEFAULT": "#f1f5f9",
+          "foreground": "#0f172a"
         },
         "content4": {
-          "DEFAULT": "#ffd7a3",
-          "foreground": "#000"
+          "DEFAULT": "#e2e8f0",
+          "foreground": "#0f172a"
         },
-        "focus": "#db924b",
+        "focus": "#2563eb",
         "overlay": "#000000"
       }
     },
     "dark": {
       "colors": {
         "default": {
-          "50": "#0a0d10",
-          "100": "#141b21",
-          "200": "#1e2932",
-          "300": "#283742",
-          "400": "#324553",
-          "500": "#4a5e6b",
-          "600": "#627883",
-          "700": "#7a919b",
-          "800": "#92aab3",
-          "900": "#aac3cb",
-          "foreground": "#e0e7eb",
-          "DEFAULT": "#324553"
+          "50": "#0f172a",
+          "100": "#1e293b",
+          "200": "#334155",
+          "300": "#475569",
+          "400": "#64748b",
+          "500": "#94a3b8",
+          "600": "#cbd5e1",
+          "700": "#e2e8f0",
+          "800": "#f1f5f9",
+          "900": "#f8fafc",
+          "foreground": "#fff",
+          "DEFAULT": "#334155"
         },
         "primary": {
-          "50": "#422c17",
-          "100": "#684524",
-          "200": "#8e5f31",
-          "300": "#b5783e",
-          "400": "#db924b",
-          "500": "#e1a56b",
-          "600": "#e8b88a",
-          "700": "#eecbaa",
-          "800": "#f4dec9",
-          "900": "#fbf1e9",
-          "foreground": "#000",
-          "DEFAULT": "#db924b"
+          "50": "#1e3a8a",
+          "100": "#1e40af",
+          "200": "#1d4ed8",
+          "300": "#2563eb",
+          "400": "#3b82f6",
+          "500": "#60a5fa",
+          "600": "#93c5fd",
+          "700": "#bfdbfe",
+          "800": "#dbeafe",
+          "900": "#eff6ff",
+          "foreground": "#fff",
+          "DEFAULT": "#3b82f6"
         },
         "secondary": {
-          "50": "#1b2828",
-          "100": "#2b3f40",
-          "200": "#3b5657",
-          "300": "#4a6d6f",
-          "400": "#5a8486",
-          "500": "#779a9b",
-          "600": "#94afb0",
-          "700": "#b1c5c6",
-          "800": "#cedadb",
-          "900": "#eaf0f0",
+          "50": "#134e4a",
+          "100": "#115e59",
+          "200": "#0f766e",
+          "300": "#0d9488",
+          "400": "#14b8a6",
+          "500": "#2dd4bf",
+          "600": "#5eead4",
+          "700": "#99f6e4",
+          "800": "#ccfbf1",
+          "900": "#f0fdfa",
           "foreground": "#000",
-          "DEFAULT": "#5a8486"
+          "DEFAULT": "#14b8a6"
         },
         "success": {
-          "50": "#2f3729",
-          "100": "#4b5740",
-          "200": "#667758",
-          "300": "#82976f",
-          "400": "#9db787",
-          "500": "#aec49c",
-          "600": "#bfd0b1",
-          "700": "#d0ddc6",
-          "800": "#e2e9db",
-          "900": "#f3f6f0",
+          "50": "#14532d",
+          "100": "#166534",
+          "200": "#15803d",
+          "300": "#16a34a",
+          "400": "#22c55e",
+          "500": "#4ade80",
+          "600": "#86efac",
+          "700": "#bbf7d0",
+          "800": "#dcfce7",
+          "900": "#f0fdf4",
           "foreground": "#000",
-          "DEFAULT": "#9db787"
+          "DEFAULT": "#22c55e"
         },
         "warning": {
-          "50": "#4d3f1d",
-          "100": "#79642d",
-          "200": "#a6893e",
-          "300": "#d2ad4e",
-          "400": "#ffd25f",
-          "500": "#ffda7b",
-          "600": "#ffe297",
-          "700": "#ffeab3",
-          "800": "#fff2cf",
-          "900": "#fff9eb",
+          "50": "#78350f",
+          "100": "#92400e",
+          "200": "#b45309",
+          "300": "#d97706",
+          "400": "#f59e0b",
+          "500": "#fbbf24",
+          "600": "#fcd34d",
+          "700": "#fde68a",
+          "800": "#fef3c7",
+          "900": "#fffbeb",
           "foreground": "#000",
-          "DEFAULT": "#ffd25f"
+          "DEFAULT": "#f59e0b"
         },
         "danger": {
-          "50": "#4c2d27",
-          "100": "#78473d",
-          "200": "#a46154",
-          "300": "#d07b6a",
-          "400": "#fc9581",
-          "500": "#fda897",
-          "600": "#fdbaad",
-          "700": "#fecdc3",
-          "800": "#fedfd9",
-          "900": "#fff2ef",
-          "foreground": "#000",
-          "DEFAULT": "#fc9581"
+          "50": "#7f1d1d",
+          "100": "#991b1b",
+          "200": "#b91c1c",
+          "300": "#dc2626",
+          "400": "#ef4444",
+          "500": "#f87171",
+          "600": "#fca5a5",
+          "700": "#fecaca",
+          "800": "#fee2e2",
+          "900": "#fef2f2",
+          "foreground": "#fff",
+          "DEFAULT": "#ef4444"
         },
-        "background": "#0f1419",
-        "foreground": "#e6fffa",
+        "background": "#0f172a",
+        "foreground": "#f8fafc",
         "content1": {
-          "DEFAULT": "#1a2025",
-          "foreground": "#fff"
+          "DEFAULT": "#1e293b",
+          "foreground": "#f8fafc"
         },
         "content2": {
-          "DEFAULT": "#1e252a",
-          "foreground": "#fff"
+          "DEFAULT": "#334155",
+          "foreground": "#f8fafc"
         },
         "content3": {
-          "DEFAULT": "#222a30",
-          "foreground": "#fff"
+          "DEFAULT": "#475569",
+          "foreground": "#f8fafc"
         },
         "content4": {
-          "DEFAULT": "#262f36",
-          "foreground": "#fff"
+          "DEFAULT": "#64748b",
+          "foreground": "#f8fafc"
         },
-        "focus": "#db924b",
-        "overlay": "#ffffff"
+        "focus": "#3b82f6",
+        "overlay": "#000000"
       }
     }
   },
@@ -244,4 +244,4 @@ const config = {
   )],
 }
 
-export default config;
+module.exports = config;

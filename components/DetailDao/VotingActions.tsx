@@ -24,6 +24,7 @@ export default function VotingActions({
   } = useVoting(
     daoInfo?.contract as string,
     daoInfo?.councilMembers || [],
+    daoInfo?.proposalPeriod || BigInt(0),
     updateProposals,
   );
   const { signedAccountId } = useWalletSelector();
