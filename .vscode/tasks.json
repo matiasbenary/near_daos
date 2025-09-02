@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Clean and build project",
+			"type": "shell",
+			"command": "rm -f postcss.config.js && yarn install && yarn build",
+			"isBackground": false,
+			"group": "build"
+		}
+	]
+}
