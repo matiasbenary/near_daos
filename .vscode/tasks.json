@@ -7,6 +7,13 @@
 			"command": "rm -f postcss.config.js && yarn install && yarn build",
 			"isBackground": false,
 			"group": "build"
+		},
+		{
+			"label": "Reinstall with Yarn to generate lockfile",
+			"type": "shell",
+			"command": "rm -rf node_modules && yarn install && yarn build",
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }
