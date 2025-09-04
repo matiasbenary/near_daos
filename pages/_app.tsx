@@ -7,19 +7,26 @@ import { setupBitteWallet } from "@near-wallet-selector/bitte-wallet";
 import { setupHotWallet } from "@near-wallet-selector/hot-wallet";
 import { setupLedger } from "@near-wallet-selector/ledger";
 import { WalletSelectorProvider } from "@near-wallet-selector/react-hook";
+import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+import { setupMeteorWalletApp } from "@near-wallet-selector/meteor-wallet-app";
 import "@near-wallet-selector/modal-ui/styles.css";
-import { NetworkId, WalletModuleFactory } from "@near-wallet-selector/core";
+import { NetworkId, WalletSelectorParams } from "@near-wallet-selector/core";
 
 import { Navbar } from "@/components/navbar";
 
 const walletSelectorConfig = {
-  network: "testnet" as NetworkId,
+  network: {
+    networkId: "testnet" as NetworkId,
+    nodeUrl: "https://rpc.testnet.fastnear.com",
+  },
   modules: [
     setupBitteWallet(),
+    setupMeteorWallet(),
+    setupMeteorWalletApp({ contractId: "" }),
     setupHotWallet(),
     setupLedger(),
-  ] as WalletModuleFactory[],
-};
+  ],
+} as WalletSelectorParams;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
