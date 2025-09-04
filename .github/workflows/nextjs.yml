@@ -41,7 +41,6 @@ jobs:
 
       - name: Prepare Pages artifact
         run: |
-          mkdir -p build
           # Prevent GitHub Pages from processing with Jekyll so it serves the _next folder
           touch build/.nojekyll
 
